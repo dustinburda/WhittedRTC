@@ -16,14 +16,14 @@ double phi(int i) {
     return result;
 }
 
-std::vector<Point3D> HammersleySampler::Sample(Point3D origin, Vec3D Vx, Vec3D Vy) {
-    std::vector<Point3D> samples;
+std::vector<Point2D> HammersleySampler::Sample() {
+    std::vector<Point2D> samples;
 
     for (int i = 0; i < num_samples_; i++) {
         double x_coordinate = i / static_cast<double>(num_samples_);
         double y_coordinate = phi(i);
 
-        samples.push_back(origin +  x_coordinate * Vx + y_coordinate * Vy);
+        samples.emplace_back(Point2D{x_coordinate, y_coordinate});
     }
 
     return samples;

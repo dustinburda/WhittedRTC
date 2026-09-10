@@ -14,12 +14,12 @@
 
 class ProjectiveCamera : public CameraInterface {
 public:
-    ProjectiveCamera(Point3D origin, Vec3D look_at_, Vec3D up, double h_fov)
+    ProjectiveCamera(Point3D origin, Point3D look_at_, Vec3D up, double h_fov)
         : CameraInterface(origin, look_at_, up, h_fov) {}
 
     virtual ~ProjectiveCamera() = default;
 
-    std::vector<Ray> GetRayAt(int x, int y, const ImagePlane& p) const override;
+    Ray GetRayAt(int x, int y, const ImagePlane& p) const override;
 };
 
 

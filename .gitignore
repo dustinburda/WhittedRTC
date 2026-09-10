@@ -5,6 +5,7 @@ images
 models
 scenes
 config
+design
 *ppm
 .DS_Store
 RAY_TRACER_REVIEW.md

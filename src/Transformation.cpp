@@ -4,6 +4,16 @@
 
 #include "../include/Transformation.h"
 
+
+Transformation Transformation::WorldToLocal( [[ maybe_unused ]] Point3D origin, [[ maybe_unused ]] OrthonormalBasis basis) {
+    Transformation t;
+
+    // TODO: Fill out transformation matrix
+
+    t.inverse_transform_ = Inverse(t.transform_);
+    return t;
+}
+
 Transformation Transformation::Identity() {
     Transformation t;
     t.transform_ = {1.0, 0.0, 0.0, 0.0,

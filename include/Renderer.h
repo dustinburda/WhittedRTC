@@ -49,14 +49,10 @@ public:
 
             for(int y = y_start; y < y_start + chunk_y_size; y++)
                 for(int x = x_start; x < x_start + chunk_x_size; x++) {
-                    auto rays = scene.camera_->GetRayAt(x, y, p);
+                    auto ray = scene.camera_->GetRayAt(x, y, p);
 
-                    Color pixel_color;
-                    for (auto& ray : rays) {
                         ShadeContext context;
-                        pixel_color += trace(scene, ray, context);
-                    }
-                    pixel_color /= rays.size();
+                        Color pixel_color = trace(scene, ray, context);
 
                     canvas.SetColorAt(pixel_color, x, y);
                 }

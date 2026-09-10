@@ -14,8 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
 
 file(GLOB SOURCE_FILES "src/*.cpp")
-get_filename_component(main_cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp ABSOLUTE)
-list(REMOVE_ITEM SOURCE_FILES ${main_cpp})
+list(REMOVE_ITEM SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 add_library(Whitted_Lib ${SOURCE_FILES})
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Whitted_Lib)

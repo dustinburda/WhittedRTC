@@ -232,7 +232,7 @@ std::unique_ptr<CameraInterface> SceneParser::ParseCamera(std::unique_ptr<XMLNod
     auto type = node->attributes_["type"];
 
     auto origin = Parse3D<Point3D>(node->ChildNode("origin"));
-    auto lookat = Parse3D<Vec3D>(node->ChildNode("lookat"));
+    auto lookat = Parse3D<Point3D>(node->ChildNode("lookat"));
     auto up = Parse3D<Vec3D>(node->ChildNode("up"));
     auto fov = std::stoi(node->ChildNode("fov")->value_);
 

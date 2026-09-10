@@ -9,10 +9,15 @@
 #include "Matrix.h"
 #include "Normal.h"
 #include "Point.h"
+#include "OrthnormalBasis.h"
 #include "Vector.h"
 
 class Transformation {
 public:
+    // Orthonormal basis constructor
+
+    static Transformation WorldToLocal(Point3D origin, OrthonormalBasis basis);
+
     static Transformation Identity();
 
     static Transformation Translation(double x, double y, double z);
