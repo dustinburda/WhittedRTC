@@ -5,10 +5,15 @@
 #include "../include/Transformation.h"
 
 
-Transformation Transformation::WorldToLocal( [[ maybe_unused ]] Point3D origin, [[ maybe_unused ]] OrthonormalBasis basis) {
+Transformation Transformation::WorldToLocal( Point3D origin, OrthonormalBasis basis) {
     Transformation t;
 
-    // TODO: Fill out transformation matrix
+    t.transform_ = {
+        basis.e1_[0], basis.e1_[1], basis.e1_[2], -Dot(basis.e1_, origin.ToVector()),
+        basis.e2_[0], basis.e2_[1], basis.e2_[2], -Dot(basis.e2_, origin.ToVector()),
+        basis.e3_[0], basis.e3_[1], basis.e3_[2], -Dot(basis.e3_, origin.ToVector()),
+        0.0,          0.0,          0.0,          1.0
+    };
 
     t.inverse_transform_ = Inverse(t.transform_);
     return t;

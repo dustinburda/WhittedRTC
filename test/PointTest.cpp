@@ -59,7 +59,37 @@ TEST(PointTest, Negation) {
     EXPECT_EQ(negative[3], -4.0);
 }
 
-TEST(PointTest, ToVector) {
+TEST(PointTest, HomogenousPointToCartesianVectorDropsLastCoordinate) {
+    Point<double, 4> point{1.0, 2.0, 3.0, 4.0};
+
+    auto vector = point.HomogenousPointToCartesianVector();
+
+    EXPECT_EQ(vector[0], 1.0);
+    EXPECT_EQ(vector[1], 2.0);
+    EXPECT_EQ(vector[2], 3.0);
+    EXPECT_EQ(vector[3], 0.0);
+}
+
+TEST(PointTest, ToVectorCopiesAllPoint3DCoordinates) {
+    Point3D point{1.0, 2.0, 3.0};
+
+    auto vector = point.ToVector();
+
+    EXPECT_EQ(vector[0], 1.0);
+    EXPECT_EQ(vector[1], 2.0);
+    EXPECT_EQ(vector[2], 3.0);
+}
+
+TEST(PointTest, ToVectorCopiesAllPoint2DCoordinates) {
+    Point2D point{1.0, 2.0};
+
+    auto vector = point.ToVector();
+
+    EXPECT_EQ(vector[0], 1.0);
+    EXPECT_EQ(vector[1], 2.0);
+}
+
+TEST(PointTest, ToVectorCopiesAllPoint4DCoordinates) {
     Point<double, 4> point{1.0, 2.0, 3.0, 4.0};
 
     auto vector = point.ToVector();
@@ -67,7 +97,7 @@ TEST(PointTest, ToVector) {
     EXPECT_EQ(vector[0], 1.0);
     EXPECT_EQ(vector[1], 2.0);
     EXPECT_EQ(vector[2], 3.0);
-    EXPECT_EQ(vector[3], 0.0);
+    EXPECT_EQ(vector[3], 4.0);
 }
 
 TEST(PointTest, ToString) {

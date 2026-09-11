@@ -151,6 +151,60 @@ TEST(TransformationTest, ComposedTransformAppliesRightHandSideFirst) {
     EXPECT_EQ(transformed[2], 2.0);
 }
 
+TEST(TransformationTest, WorldToLocalTransformsPointIntoBasisCoordinates) {
+    auto transformation = Transformation::WorldToLocal(
+        Point3D{10.0, 20.0, 30.0},
+        OrthonormalBasis{
+            Vec3D{1.0, 0.0, 0.0},
+            Vec3D{0.0, 1.0, 0.0},
+            Vec3D{0.0, 0.0, 1.0}
+        }
+    );
+    Point3D point{11.0, 22.0, 33.0};
+
+    auto transformed = transformation(point);
+
+    EXPECT_NEAR(transformed[0], 1.0, 1e-5);
+    EXPECT_NEAR(transformed[1], 2.0, 1e-5);
+    EXPECT_NEAR(transformed[2], 3.0, 1e-5);
+}
+
+TEST(TransformationTest, WorldToLocalInverseTransformsLocalPointBackToWorld) {
+    auto transformation = Transformation::WorldToLocal(
+        Point3D{10.0, 20.0, 30.0},
+        OrthonormalBasis{
+            Vec3D{1.0, 0.0, 0.0},
+            Vec3D{0.0, 1.0, 0.0},
+            Vec3D{0.0, 0.0, 1.0}
+        }
+    );
+    Point3D point{1.0, 2.0, 3.0};
+
+    auto transformed = transformation.ApplyInverse(point);
+
+    EXPECT_NEAR(transformed[0], 11.0, 1e-5);
+    EXPECT_NEAR(transformed[1], 22.0, 1e-5);
+    EXPECT_NEAR(transformed[2], 33.0, 1e-5);
+}
+
+TEST(TransformationTest, WorldToLocalUsesBasisRows) {
+    auto transformation = Transformation::WorldToLocal(
+        Point3D{1.0, 2.0, 3.0},
+        OrthonormalBasis{
+            Vec3D{0.0, 1.0, 0.0},
+            Vec3D{0.0, 0.0, 1.0},
+            Vec3D{1.0, 0.0, 0.0}
+        }
+    );
+    Point3D point{4.0, 6.0, 8.0};
+
+    auto transformed = transformation(point);
+
+    EXPECT_NEAR(transformed[0], 4.0, 1e-5);
+    EXPECT_NEAR(transformed[1], 5.0, 1e-5);
+    EXPECT_NEAR(transformed[2], 3.0, 1e-5);
+}
+
 TEST(TransformationTest, ApplyInverseToPoint) {
     auto transformation = Transformation::Translation(3.0, 4.0, 5.0);
     Point<double, 3> point{4.0, 6.0, 8.0};

@@ -37,7 +37,7 @@ Color SimplePhongMaterial::Shade(ShadeContext& context, std::vector<std::shared_
 
         if (n_dot_l > 0.0) {
             auto light_color = light->GetIntensity() * light->GetColor();
-            auto v = (-context.point_).ToVector().UnitVector(); // Camera is at origin
+            auto v = (-context.point_).HomogenousPointToCartesianVector().UnitVector(); // Camera is at origin
 
 
             auto h = (v + l).UnitVector();

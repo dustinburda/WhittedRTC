@@ -40,9 +40,9 @@ bool Triangle::Hit(const Ray &r, ShadeContext &context) const
 
     if (is_textured_){
         auto barycentric_coordinates = BarycentricCoordinates(hit_point);
-        auto uv_vector_ = barycentric_coordinates[0] * vertices_[0].texture_coordinate_.value().ToVector() +
-                          barycentric_coordinates[1] * vertices_[1].texture_coordinate_.value().ToVector() +
-                          barycentric_coordinates[2] * vertices_[2].texture_coordinate_.value().ToVector();
+        auto uv_vector_ = barycentric_coordinates[0] * vertices_[0].texture_coordinate_.value().HomogenousPointToCartesianVector() +
+                          barycentric_coordinates[1] * vertices_[1].texture_coordinate_.value().HomogenousPointToCartesianVector() +
+                          barycentric_coordinates[2] * vertices_[2].texture_coordinate_.value().HomogenousPointToCartesianVector();
 
         context.uv_ = Point2D{uv_vector_[0], uv_vector_[1]};
     } else {

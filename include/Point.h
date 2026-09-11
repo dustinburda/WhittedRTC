@@ -61,10 +61,19 @@ public:
         return negative;
     }
 
-    Vector<T, N> ToVector() const {
+    Vector<T, N> HomogenousPointToCartesianVector() const {
         Vector<T, N> v;
 
         for(std::size_t i = 0; i < N - 1; i++)
+            v[i] = data_[i];
+
+        return v;
+    }
+
+    Vector<T, N> ToVector() const {
+        Vector<T, N> v;
+
+        for(std::size_t i = 0; i < N; i++)
             v[i] = data_[i];
 
         return v;
