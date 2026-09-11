@@ -8,6 +8,13 @@ TileQueue::TileQueue() : state_{TileQueueState::Open}, current_tile_(0) {
 
 }
 
+TileQueue::TileQueue(TileQueue&& other)
+    : state_ {other.state_}, q_{std::move(other.q_)}, current_tile_{other.current_tile_.load()}
+{
+
+}
+
+
 void TileQueue::AddTile(Tile&& t) {
     if (state_ != TileQueueState::Open)
         throw std::logic_error("Can't add tiles if queue is not open.");

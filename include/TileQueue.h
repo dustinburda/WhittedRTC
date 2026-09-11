@@ -25,6 +25,7 @@ enum class TileQueueState {
 class TileQueue {
 public:
     TileQueue();
+    TileQueue(TileQueue&& other);
 
     void AddTile(Tile&& t);
     void Close();

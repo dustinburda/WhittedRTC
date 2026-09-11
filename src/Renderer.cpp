@@ -25,7 +25,7 @@ void Renderer::SetThreads(std::size_t num_threads) {
 }
 
 void Renderer::Render( Scene& scene, Canvas& canvas) {
-    auto tile_queue = GenerateTiles(scene);
+    auto&& tile_queue = GenerateTiles(canvas);
 
     auto run_thread = [&tile_queue, &scene, &canvas, this]() {
         while (auto tile = tile_queue.NextTile()) {
@@ -39,8 +39,31 @@ void Renderer::Render( Scene& scene, Canvas& canvas) {
     }
 }
 
-TileQueue Renderer::GenerateTiles( [[ maybe_unused ]] const Scene& scene) const {
-    return TileQueue {};
+TileQueue Renderer::GenerateTiles( const Canvas& canvas) const {
+    std::size_t width = canvas.Width();
+    std::size_t height = canvas.Height();
+
+    std::size_t tile_size = 32;
+
+    TileQueue queue;
+    std::size_t x_start = 0;
+    while ( x_start < width) {
+        std::size_t tile_x_length = std::min (width - x_start, tile_size);
+
+        std::size_t y_start = 0;
+        while (y_start < height) {
+            size_t tile_y_length = std::min(height - y_start, tile_size);
+
+            queue.AddTile({x_start, tile_x_length, y_start, tile_y_length});
+
+            y_start += tile_y_length;
+        }
+        x_start += tile_x_length;
+    }
+
+    queue.Close();
+
+    return queue;
 }
 
 void Renderer::RenderTile(const Tile& t, Scene& scene, Canvas& canvas) const {

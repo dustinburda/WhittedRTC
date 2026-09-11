@@ -27,7 +27,7 @@ public:
 private:
     Renderer();
 
-    TileQueue GenerateTiles(const Scene& scene) const;
+    TileQueue GenerateTiles(const Canvas& canvas) const;
     void RenderTile(const Tile& t, Scene& scene, Canvas& canvas) const ;
     Color Trace(Scene& scene, Ray& r, ShadeContext& context) const ;
 
