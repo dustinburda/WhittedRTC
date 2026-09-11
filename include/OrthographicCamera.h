@@ -11,8 +11,8 @@ class OrthographicCamera : public CameraInterface {
 public:
     OrthographicCamera() = delete;
 
-    OrthographicCamera(Point3D origin, Point3D look_at_, Vec3D up, double h_fov)
-        : CameraInterface(origin, look_at_, up, h_fov) {}
+    OrthographicCamera(Point3D origin, Point3D look_at_, Vec3D up)
+        : CameraInterface(origin, look_at_, up) {}
 
     virtual ~OrthographicCamera() = default;
 

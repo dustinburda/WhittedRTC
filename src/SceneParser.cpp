@@ -239,7 +239,7 @@ std::unique_ptr<CameraInterface> SceneParser::ParseCamera(std::unique_ptr<XMLNod
     if (type == "projective") {
         camera = std::make_unique<ProjectiveCamera>(origin, lookat, up, fov);
     } else if (type == "orthographic") {
-        camera = std::make_unique<OrthographicCamera>(origin, lookat, up, fov);
+        camera = std::make_unique<OrthographicCamera>(origin, lookat, up);
     } else {
         throw std::logic_error ("Uknown Camera Type");
     }
