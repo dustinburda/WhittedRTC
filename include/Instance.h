@@ -29,12 +29,17 @@ public:
     BoundingBox BBox() const override;
     InstanceType Type() const;
 
+    double SurfaceAreaBBox();
+
     void GetTriangles(std::vector<Instance>& instances) const;
     
 private:
+    BoundingBox ComputeBBox();
+
     std::shared_ptr<Transformation> transform_;
     std::shared_ptr<ShapeInterface> shape_;
     std::shared_ptr<MaterialInterface> mat_;
+    BoundingBox bounding_box_;
     InstanceType instance_type_;
 };
 

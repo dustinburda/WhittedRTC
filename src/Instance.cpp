@@ -7,10 +7,10 @@
 #include "../include/Mesh.h"
 
 Instance::Instance(std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat, InstanceType type)
-    : transform_{nullptr}, shape_{std::move(shape)}, mat_{std::move(mat)}, instance_type_{type} {}
+    : transform_{nullptr}, shape_{std::move(shape)}, mat_{std::move(mat)}, bounding_box_(ComputeBBox()), instance_type_{type} {}
 
 Instance::Instance(std::shared_ptr<Transformation> t, std::shared_ptr<ShapeInterface> shape, std::shared_ptr<MaterialInterface> mat, InstanceType type)
-    :transform_{t}, shape_{std::move(shape)}, mat_{std::move(mat)}, instance_type_{type} {}
+    :transform_{t}, shape_{std::move(shape)}, mat_{std::move(mat)}, bounding_box_(ComputeBBox()), instance_type_{type} {}
 
 Normal<double, 3> Instance::NormalAt(const Point<double, 3>& p) const {
     if(transform_ == nullptr)
@@ -46,6 +46,37 @@ bool Instance::Hit(const Ray& r, ShadeContext& context) const {
 }
 
 BoundingBox Instance::BBox() const {
+    return bounding_box_;
+}
+
+InstanceType Instance::Type() const {
+    return instance_type_;
+}
+
+double Instance::SurfaceAreaBBox() {
+    double f1Area = bounding_box_.Height() * bounding_box_.Width();
+    double f2Area = bounding_box_.Width() * bounding_box_.Length();
+    double f3Area = bounding_box_.Height() * bounding_box_.Length();
+
+    return 2 * (f1Area + f2Area + f3Area);
+}
+
+void Instance::GetTriangles(std::vector<Instance>& instances) const {
+    if (instance_type_ != InstanceType::Mesh)
+        throw std::logic_error("Can only get triangles from a mesh");
+
+    auto mesh_ptr = dynamic_cast<Mesh*>(shape_.get());
+
+    auto triangles = mesh_ptr->Triangles();
+    for (auto& triangle : triangles) {
+        auto triangle_ptr = std::make_shared<Triangle>(triangle);
+        auto triangle_instance = Instance{transform_, triangle_ptr, mat_, InstanceType::Triangle};
+
+        instances.push_back(triangle_instance);
+    }
+}
+
+BoundingBox Instance::ComputeBBox() {
     if(transform_ == nullptr)
         return shape_->BBox();
 
@@ -72,24 +103,4 @@ BoundingBox Instance::BBox() const {
     }
 
     return BoundingBox {transformed_bbox_min, transformed_bbox_max};
-}
-InstanceType Instance::Type() const {
-    return instance_type_;
-}
-
-
-
-void Instance::GetTriangles(std::vector<Instance>& instances) const {
-    if (instance_type_ != InstanceType::Mesh)
-        throw std::logic_error("Can only get triangles from a mesh");
-
-    auto mesh_ptr = dynamic_cast<Mesh*>(shape_.get());
-
-    auto triangles = mesh_ptr->Triangles();
-    for (auto& triangle : triangles) {
-        auto triangle_ptr = std::make_shared<Triangle>(triangle);
-        auto triangle_instance = Instance{transform_, triangle_ptr, mat_, InstanceType::Triangle};
-
-        instances.push_back(triangle_instance);
-    }
 }

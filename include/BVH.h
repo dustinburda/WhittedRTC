@@ -13,12 +13,14 @@
 #include <optional>
 
 enum class SplitMethod {
-    RandomAxis,
+    RandomSplitAxis,
+    CentroidCountMedianSplit,
+    CentroidSpatialMedianSplit,
     SurfaceAreaHeuristic,
-
 };
 
 struct BVHNode {
+public:
 public:
     explicit BVHNode(Instance instance);
     BVHNode(std::unique_ptr<BVHNode> left, std::unique_ptr<BVHNode> right);
@@ -38,13 +40,13 @@ private:
 class BVH {
 public:
     BVH();
-    explicit BVH(std::vector<Instance>& shapes);
+    explicit BVH(std::vector<Instance>& shapes, SplitMethod split_method);
     bool Hit(const Ray& r, ShadeContext& s);
     std::unique_ptr<BVHNode> Build(std::vector<Instance> shapes);
 private:
-
     std::unique_ptr<BVHNode> BuildRecursive(std::span<Instance> shapes) const;
 
+private:
     std::unique_ptr<BVHNode> root_;
 };
 

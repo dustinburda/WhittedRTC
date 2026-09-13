@@ -28,7 +28,7 @@ bool BVHNode::Hit(const Ray& r, ShadeContext& context) {
 
 BVH::BVH() : root_{nullptr} {}
 
-BVH::BVH(std::vector<Instance>& shapes) {
+BVH::BVH(std::vector<Instance>& shapes, [[ maybe_unused ]] SplitMethod split_method) {
     root_ = Build(shapes);
 }
 
@@ -54,7 +54,7 @@ std::unique_ptr<BVHNode> BVH::BuildRecursive(std::span<Instance> shapes) const {
     int split_axis = RandomInt(0, 2);
 
     // TODO: replace basic comparator with Surface Area Heuristic
-    auto comparator = [&split_axis](Instance i1, Instance i2) {
+    auto comparator = [&split_axis](const Instance& i1, const Instance& i2) {
         return i1.BBox().Min()[split_axis] < i2.BBox().Min()[split_axis];
     };
 

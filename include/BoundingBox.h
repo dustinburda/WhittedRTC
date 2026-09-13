@@ -33,6 +33,10 @@ public:
     Point3D Min() const { return min_; }
     Point3D Max() const { return max_; }
 
+    double Width();
+    double Height();
+    double Length();
+
     std::string toString() const;
 
 

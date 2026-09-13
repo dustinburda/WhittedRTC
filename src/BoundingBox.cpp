@@ -56,6 +56,18 @@ bool BoundingBox::Hit(const Ray& r, [[ maybe_unused ]] ShadeContext& context) co
     return Interval::Intersects({x_interval, y_interval, z_interval});
 }
 
+double BoundingBox::Width() {
+    return std::abs(max_[0] - min_[0]);
+}
+
+double BoundingBox::Height() {
+    return std::abs(max_[1] - min_[1]);
+}
+
+double BoundingBox::Length() {
+    return std::abs(max_[2] - min_[2]);
+}
+
 std::string BoundingBox::toString() const {
     std::stringstream ss;
 
