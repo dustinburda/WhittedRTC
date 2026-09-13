@@ -57,11 +57,11 @@ BoundingBox Instance::BBox() const {
     auto length_z = bbox_max[2] - bbox_min[2];
 
     Point3D transformed_bbox_min = { std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max() };
-    Point3D transformed_bbox_max = { std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min() };
+    Point3D transformed_bbox_max = { std::numeric_limits<double>::lowest(), std::numeric_limits<double>::lowest(), std::numeric_limits<double>::lowest() };
     for (int i = 0; i < 8; i++) {
-        Point3D p { bbox_min[0] + (i & (1 << 0)) * length_x,
-                    bbox_min[1] + (i & (1 << 1)) * length_y,
-                    bbox_min[2] + (i & (1 << 2)) * length_z };
+        Point3D p { bbox_min[0] + ((i & (1 << 0)) >> 0) * length_x,
+                    bbox_min[1] + ((i & (1 << 1)) >> 1) * length_y,
+                    bbox_min[2] + ((i & (1 << 2)) >> 2) * length_z };
 
         Point3D transformed_p = (*transform_)(p);
 
