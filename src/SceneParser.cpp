@@ -234,7 +234,10 @@ std::unique_ptr<CameraInterface> SceneParser::ParseCamera(std::unique_ptr<XMLNod
     auto origin = Parse3D<Point3D>(node->ChildNode("origin"));
     auto lookat = Parse3D<Point3D>(node->ChildNode("lookat"));
     auto up = Parse3D<Vec3D>(node->ChildNode("up"));
-    auto fov = std::stoi(node->ChildNode("fov")->value_);
+    auto fov = std::stod(node->ChildNode("fov")->value_);
+
+    if (node->ChildNode("fov")->attributes_.contains("units") && node->ChildNode("fov")->attributes_.at("units") == "degrees")
+        fov *= (pi / 180.0);
 
     if (type == "projective") {
         camera = std::make_unique<ProjectiveCamera>(origin, lookat, up, fov);
