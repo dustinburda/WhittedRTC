@@ -8,8 +8,15 @@
 #include "BoundingBox.h"
 #include "Instance.h"
 
+#include <span>
 #include <memory>
 #include <optional>
+
+enum class SplitMethod {
+    RandomAxis,
+    SurfaceAreaHeuristic,
+
+};
 
 struct BVHNode {
 public:
@@ -35,7 +42,8 @@ public:
     bool Hit(const Ray& r, ShadeContext& s);
     void Rebuild(std::vector<Instance> shapes);
 private:
-    std::unique_ptr<BVHNode> Build(std::vector<Instance> shapes) const;
+
+    std::unique_ptr<BVHNode> Build(std::span<Instance> shapes) const;
 
     std::unique_ptr<BVHNode> root_;
 };

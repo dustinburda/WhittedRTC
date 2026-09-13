@@ -48,6 +48,11 @@ bool BoundingBox::Hit(const Ray& r, [[ maybe_unused ]] ShadeContext& context) co
     Interval y_interval {(min_[1] - orig[1])/dir[1], (max_[1] - orig[1])/dir[1] };
     Interval z_interval {(min_[2] - orig[2])/dir[2], (max_[2] - orig[2])/dir[2] };
 
+    if (context.t_max_ < std::max({x_interval.t_min_, y_interval.t_min_, z_interval.t_min_}) ||
+        context.t_min_ > std::min({x_interval.t_max_, y_interval.t_max_, z_interval.t_max_})) {
+        return false;
+    }
+
     return Interval::Intersects({x_interval, y_interval, z_interval});
 }
 

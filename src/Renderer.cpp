@@ -12,12 +12,11 @@ Renderer& Renderer::GetInstance() {
 
 Renderer::Renderer() {
     threads_.reserve(4);
+    num_threads_ = 4;
 }
 
 Renderer::~Renderer() {
-    for (auto&& thread : threads_)
-        if (thread.joinable())
-            thread.join();
+
 }
 
 void Renderer::SetThreads(std::size_t num_threads) {
@@ -33,10 +32,13 @@ void Renderer::Render( Scene& scene, Canvas& canvas) {
         }
     };
 
-    auto num_threads = threads_.size();
-    for (std::size_t i = 0; i < num_threads; i++) {
+    for (std::size_t i = 0; i < num_threads_; i++) {
         threads_.emplace_back(std::thread(run_thread));
     }
+
+    for (auto&& thread : threads_)
+        if (thread.joinable())
+            thread.join();
 }
 
 TileQueue Renderer::GenerateTiles( const Canvas& canvas) const {

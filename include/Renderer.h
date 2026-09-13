@@ -33,6 +33,7 @@ private:
 
 private:
     std::vector<std::thread> threads_;
+    std::size_t num_threads_;
 };
 
 #endif //WHITTED_RENDERER_H

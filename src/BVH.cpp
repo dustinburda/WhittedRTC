@@ -40,7 +40,7 @@ void BVH::Rebuild(std::vector<Instance> shapes) {
     root_ = Build(shapes);
 }
 
-std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes) const {
+std::unique_ptr<BVHNode> BVH::Build(std::span<Instance> shapes) const {
     if (shapes.size() == 1) {
         return std::make_unique<BVHNode>(shapes[0]);
     }
@@ -54,8 +54,8 @@ std::unique_ptr<BVHNode> BVH::Build(std::vector<Instance> shapes) const {
 
     std::sort(shapes.begin(), shapes.end(), comparator);
 
-    std::vector<Instance> s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
-    std::vector<Instance> s2 {shapes.begin() + shapes.size() / 2, shapes.end()};
+    std::span<Instance> s1 {shapes.begin(), shapes.begin() + shapes.size() / 2};
+    std::span<Instance> s2 {shapes.begin() + shapes.size() / 2, shapes.end()};
 
     auto left = Build(s1);
     auto right = Build(s2);

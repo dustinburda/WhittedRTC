@@ -13,6 +13,7 @@
 
 TEST(TileQueueTest, EmptyQueueReturnsNullopt) {
     TileQueue queue;
+    queue.Close();
 
     auto tile = queue.NextTile();
 
@@ -23,6 +24,8 @@ TEST(TileQueueTest, NextTileReturnsTilesInInsertionOrder) {
     TileQueue queue;
     queue.AddTile(Tile{0, 10, 0, 10});
     queue.AddTile(Tile{10, 20, 0, 10});
+
+    queue.Close();
 
     auto first = queue.NextTile();
     auto second = queue.NextTile();
@@ -50,6 +53,8 @@ TEST(TileQueueTest, ConcurrentNextTileClaimsEachTileOnce) {
 
     for (std::size_t i = 0; i < num_tiles; i++)
         queue.AddTile(Tile{i, 1, 0, 1});
+
+    queue.Close();
 
     std::vector<std::size_t> claimed;
     std::mutex claimed_mutex;
