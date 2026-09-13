@@ -16,7 +16,7 @@ void World::AddShape(Instance instance)
 }
 
 void World::Build() {
-    bvh_.Rebuild(instances_);
+    bvh_.Build(instances_);
 }
 
 bool World::Hit(const Ray& r, ShadeContext& context)

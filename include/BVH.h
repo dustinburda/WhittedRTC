@@ -40,10 +40,10 @@ public:
     BVH();
     explicit BVH(std::vector<Instance>& shapes);
     bool Hit(const Ray& r, ShadeContext& s);
-    void Rebuild(std::vector<Instance> shapes);
+    std::unique_ptr<BVHNode> Build(std::vector<Instance> shapes);
 private:
 
-    std::unique_ptr<BVHNode> Build(std::span<Instance> shapes) const;
+    std::unique_ptr<BVHNode> BuildRecursive(std::span<Instance> shapes) const;
 
     std::unique_ptr<BVHNode> root_;
 };
